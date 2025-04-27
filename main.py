@@ -40,12 +40,29 @@ def add(timer):
         config_file.write(configuration)
 
 
+def remove(key_to_remove):
+    configuration = load_config()
+
+    configuration.pop(key_to_remove)
+
+    configuration = json.dumps(configuration, sort_keys=True, indent=4)
+
+    with open(CONFIG_FILE, 'w', encoding='utf-8') as config_file:
+        config_file.write(configuration)
+
+
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--add', nargs=2)
+    parser.add_argument('--remove', nargs=1)
     args = parser.parse_args()
-    add(args.add)
+
+    if args.add:
+        add(args.add)
+    elif args.remove:
+        remove(args.remove[0])
+
 
 
 
