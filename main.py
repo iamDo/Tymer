@@ -16,6 +16,13 @@ def load_config():
     return configuration
 
 
+def write_config(configuration):
+    configuration = json.dumps(configuration, sort_keys=True, indent=4)
+
+    with open(CONFIG_FILE, 'w', encoding='utf-8') as config_file:
+        config_file.write(configuration)
+
+
 def parse_name_and_duration(timer):
     duration_regex = r'[0-9]*[sSmMhH]'
     duration = ''
@@ -34,10 +41,7 @@ def add(timer):
     configuration = load_config()
     timer = parse_name_and_duration(timer)
     configuration[timer[0]] = timer[1]
-    configuration = json.dumps(configuration, sort_keys=True, indent=4)
-
-    with open(CONFIG_FILE, 'w', encoding='utf-8') as config_file:
-        config_file.write(configuration)
+    write_config(configuration)
 
 
 def remove(key_to_remove):
@@ -45,10 +49,7 @@ def remove(key_to_remove):
 
     configuration.pop(key_to_remove)
 
-    configuration = json.dumps(configuration, sort_keys=True, indent=4)
-
-    with open(CONFIG_FILE, 'w', encoding='utf-8') as config_file:
-        config_file.write(configuration)
+    write_config(configuration)
 
 
 
