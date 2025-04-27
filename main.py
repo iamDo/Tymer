@@ -7,6 +7,10 @@ import re
 CONFIG_FILE = PosixPath('~/.config/tymer.json').expanduser()
 
 
+class TimerDoesNotExistException(Exception):
+    pass
+
+
 def load_config():
     configuration = {}
     with open(CONFIG_FILE, encoding='utf-8') as config_file:
@@ -50,16 +54,30 @@ def remove(key_to_remove):
     write_config(configuration)
 
 
+def edit(timer):
+    configuration = load_config()
+    timer = parse_name_and_duration(timer)
+    if timer[0] in configuration:
+        configuration[timer[0]] = timer[1]
+    else:
+        raise TimerDoesNotExistException(f"Timer {timer[0]} does not exist!")
+    write_config(configuration)
+
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--add', nargs=2)
     parser.add_argument('--remove', nargs=1)
+    parser.add_argument('--edit', nargs=2)
     args = parser.parse_args()
 
     if args.add:
         add(args.add)
     elif args.remove:
         remove(args.remove[0])
+    elif args.edit:
+        edit(args.edit)
 
 
 
