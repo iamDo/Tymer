@@ -7,6 +7,15 @@ import re
 CONFIG_FILE = PosixPath('~/.config/tymer.json').expanduser()
 
 
+def load_config():
+    configuration = {}
+    with open(CONFIG_FILE, encoding='utf-8') as config_file:
+        configuration = config_file.read()
+
+    configuration = json.loads(configuration)
+    return configuration
+
+
 def parse_name_and_duration(timer):
     duration_regex = r'[0-9]*[sSmMhH]'
     duration = ''
@@ -22,15 +31,10 @@ def parse_name_and_duration(timer):
 
 
 def add(timer):
-    configuration = {}
-    with open(CONFIG_FILE, encoding='utf-8') as config_file:
-        configuration = config_file.read()
-
-    configuration = json.loads(configuration)
+    configuration = load_config()
     timer = parse_name_and_duration(timer)
     configuration[timer[0]] = timer[1]
     configuration = json.dumps(configuration, sort_keys=True, indent=4)
-    print(configuration)
 
     with open(CONFIG_FILE, 'w', encoding='utf-8') as config_file:
         config_file.write(configuration)
