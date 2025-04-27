@@ -46,9 +46,7 @@ def add(timer):
 
 def remove(key_to_remove):
     configuration = load_config()
-
     configuration.pop(key_to_remove)
-
     write_config(configuration)
 
 
