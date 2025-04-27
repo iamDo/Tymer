@@ -50,7 +50,6 @@ def remove(key_to_remove):
     write_config(configuration)
 
 
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--add', nargs=2)
@@ -61,7 +60,6 @@ def main():
         add(args.add)
     elif args.remove:
         remove(args.remove[0])
-
 
 
 
